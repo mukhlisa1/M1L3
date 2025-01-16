@@ -30,4 +30,17 @@ def links_ban(message):
             bot.ban_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
             bot.reply_to(message, f"Пользователь {message.from_user.username} забанен за отправку сообщений.")
 
+@bot.message_handler(content_types=['new_chat_members'])
+def make_some(message):
+    bot.send_message(message.chat.id, f"К нам присоединился новый пользователь")
+    bot.approve_chat_join_request(message.chat.id, message.from_user.id)
+
+
+@bot.message_handler(commands=['info'])
+def info_member(message):
+    if message.reply_to_message: 
+        user_id = message.reply_to_message.from_user.id  
+        bot.reply_to(message, f"ID пользователя: {user_id}")
+
+
 bot.infinity_polling(none_stop=True)
